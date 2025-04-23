@@ -16,6 +16,7 @@ img_median = cv2.medianBlur(img, 5)
 #     cv2.waitKey(40)
 
 cv2.imshow("image", img)
+
 cv2.imshow("blur image", img_blur)
 cv2.imshow("gaussian blur image", img_gaussian)
 cv2.imshow("median blur image", img_median)
