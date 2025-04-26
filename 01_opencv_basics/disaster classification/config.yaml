@@ -1,0 +1,8 @@
+path: D:/git/learning-cv/01_opencv_basics/disaster classification/output
+train: images/train
+val: images/val
+
+names:
+  0: fire
+  1: flood
+  2: damage
