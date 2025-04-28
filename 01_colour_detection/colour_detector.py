@@ -21,7 +21,7 @@ def getLimits(colour):
 
     return lower, upper
 
-colour = [0, 255, 255]      #yellow in bgr coloursapce
+colour = [0, 255, 0]      #yellow in bgr coloursapce
 
 cap = cv2.VideoCapture(1)
 
