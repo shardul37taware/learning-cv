@@ -3,11 +3,11 @@ import shutil
 import random
 
 # Define dataset path and class labels
-dataset_path = "D:/sst/disaster"
+dataset_path = "D:\\sst\\disaster\\control"
 classes = ['fire', 'flood', 'damage']  # Order defines class IDs
 
 # Output folders
-output_img_path = "D:/sst/disaster/output/images"
+output_img_path = "D:\\sst\\disaster\\control"
 output_lbl_path = "D:/sst/disaster/output/labels"
 os.makedirs(output_img_path, exist_ok=True)
 os.makedirs(output_lbl_path, exist_ok=True)
@@ -17,9 +17,9 @@ all_images = []
 
 for class_id, class_name in enumerate(classes):
     class_folder = os.path.join(dataset_path, class_name)
-    for img_file in os.listdir(class_folder):
+    for img_file in os.listdir(dataset_path):
         if img_file.lower().endswith(('.jpg', '.jpeg', '.png')):
-            img_path = os.path.join(class_folder, img_file)
+            img_path = output_img_path
             all_images.append((img_path, class_id))
 
 # Shuffle the list
@@ -35,6 +35,6 @@ for idx, (img_path, class_id) in enumerate(all_images, start=1):
     shutil.copy(img_path, dst_img_path)
 
     # Write corresponding label file
-    label_path = os.path.join(output_lbl_path, f"{img_name_without_ext}.txt")
-    with open(label_path, 'w') as f:
-        f.write(f"{class_id} 0.5 0.5 1.0 1.0\n")
+    # label_path = os.path.join(output_lbl_path, f"{img_name_without_ext}.txt")
+    # with open(label_path, 'w') as f:
+    #     f.write(f"{class_id} 0.5 0.5 1.0 1.0\n")
