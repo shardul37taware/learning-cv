@@ -34,8 +34,15 @@ while True:
         outputs = model(input_tensor)
         probs = torch.softmax(outputs, dim=1)
         pred_idx = torch.argmax(probs, dim=1).item()
-        label = class_names[pred_idx]
         confidence = probs[0][pred_idx].item()
+
+        # Apply confidence threshold
+        if confidence >= 0.5:
+            label = class_names[pred_idx]
+        else:
+            label = "Normal"
+            pred_idx = class_names.index("Normal")  # Optional: if you want to log it
+
 
     # Display
     cv2.putText(frame, f"{label} ({confidence:.2f})", (10, 30),
