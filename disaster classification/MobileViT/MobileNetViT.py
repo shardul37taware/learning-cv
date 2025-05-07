@@ -6,7 +6,7 @@ import numpy as np
 
 # Load model
 model = timm.create_model("mobilevit_s", pretrained=False, num_classes=4)  # change `3` to your number of classes
-model.load_state_dict(torch.load("D:/git/learning-cv/disaster classification/MobileViT/mobilevit_s_disaster.pth", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("D:/git/learning-cv/disaster classification/MobileViT/mobilevit_s_disasterII.pth", map_location=torch.device('cpu')))
 model.eval()
 
 transform = transforms.Compose([
