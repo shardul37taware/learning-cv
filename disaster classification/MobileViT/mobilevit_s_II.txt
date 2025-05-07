@@ -1,4 +1,6 @@
-precision    recall  f1-score   support
+Validation Accuracy: 96.18%
+
+		    precision    recall  f1-score   support
 
       damage       0.97      0.90      0.94       152
         fire       0.97      0.99      0.98       155
