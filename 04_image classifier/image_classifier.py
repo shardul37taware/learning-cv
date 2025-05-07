@@ -14,7 +14,7 @@ from PIL import Image
 
 print('0')
 # prepare data
-input_dir = 'D:/sst/disaster/dataset/result/test'
+input_dir = 'D:/sst/disaster/dataset raw'
 categories = ['damage','fire','flood','normal']
 
 data = []
@@ -29,10 +29,10 @@ for category_idx, category in enumerate(categories):
         img_path = os.path.join(category_path, file)
         print(f"Processing: {img_path}")
         try:
-            img = Image.open(img_path).convert('RGB')
-            img = img.resize((15, 15))
-            data.append(np.asarray(img).flatten())
-            labels.append(category_idx)
+            with Image.open(img_path).convert('RGB') as img:
+                img = img.resize((15, 15)) 
+                data.append(np.asarray(img, dtype=np.float32).flatten())
+                labels.append(category_idx)
         except Exception as e:
             print(f"Error with file {img_path}: {e}") 
 
@@ -54,7 +54,7 @@ grid_search.fit(x_train, y_train)
 print('3')
 # test performance
 best_estimator = grid_search.best_estimator_
-y_prediction = best_estimator.predict(y_test)
+y_prediction = best_estimator.predict(x_test)
 score = accuracy_score(y_prediction, y_test)
 
 print('{}% of samples were correctly classified'.format(str(score*100)))
