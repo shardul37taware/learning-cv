@@ -27,4 +27,4 @@ for j, dir_ in enumerate([train_dir, val_dir]):
     data[['training_data', 'validation_data'][j]] = features
     data[['training_labels','validation_labels'][j]] = labels
 
-print(data.keys)
+print(data.keys())
