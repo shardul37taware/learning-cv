@@ -9,6 +9,8 @@ data_dir = 'D:/sst/disaster/dataset/result'
 train_dir = os.path.join(data_dir, "train")
 val_dir = os.path.join(data_dir, "val")
 
+img2vec = Img2Vec()
+
 data = {}
 
 for j, dir_ in enumerate([train_dir, val_dir]):
@@ -19,7 +21,10 @@ for j, dir_ in enumerate([train_dir, val_dir]):
             img_path_ = os.path.join(dir_, category, img_path)
             img = Image.open(img_path_)
 
-            img_features = Img2Vec.get_vec(img)
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
+
+            img_features = img2vec.get_vec(img)
 
             features.append(img_features)
             labels.append(category)
