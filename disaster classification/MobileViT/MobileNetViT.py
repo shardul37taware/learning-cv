@@ -3,6 +3,7 @@ import torch
 import torchvision.transforms as transforms
 import cv2
 import numpy as np
+from collections import Counter
 
 # Load model
 model = timm.create_model("mobilevit_s", pretrained=False, num_classes=4)  # change `3` to your number of classes
@@ -17,13 +18,12 @@ transform = transforms.Compose([
 
 
 # Set up video feed (0 = webcam; change to URL or device for drone)
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 class_names = ["Damage", "Fire", "Flood", "Normal"]  # change to your actual class labels
 
-
-cap = cv2.VideoCapture(1)
-
+frameCount = 0
+predList = []
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -39,12 +39,19 @@ while True:
         pred_idx = torch.argmax(probs, dim=1).item()
         confidence = probs[0][pred_idx].item()
 
-        # Apply confidence threshold
-        if confidence >= 0.5:
-            label = class_names[pred_idx]
-        else:
-            label = "Normal"
-            pred_idx = class_names.index("Normal")  # Optional: if you want to log it
+        predList.append(pred_idx)
+
+        # Apply confidence threshold majority vote
+        if frameCount % 5 == 0:
+            majorPred = Counter(predList).most_common(1)[0][0]
+
+            if confidence >= 0.5:
+                label = class_names[majorPred]
+            else:
+                label = "Normal"
+                pred_idx = class_names.index("Normal")  # Optional: if you want to log it
+
+            predList.clear()
 
 
     # Display
@@ -54,6 +61,8 @@ while True:
 
     if cv2.waitKey(1) & 0xFF == ord(' '):
         break
+
+    frameCount+=1 
 
 cap.release()
 cv2.destroyAllWindows()
