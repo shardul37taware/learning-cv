@@ -1,49 +1,71 @@
 import os
 import random
-from PIL import Image
+import shutil
+from tqdm import tqdm  # for progress bar (install with pip install tqdm)
 
-def shuffle_and_rename_images(folder_path):
-    # Get all files in the folder
-    files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
-    
-    # Filter for image files (you can add more extensions if needed)
+def process_folder(input_folder, output_root):
+    # Get all image files in the input folder
     image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff']
-    images = [f for f in files if os.path.splitext(f)[1].lower() in image_extensions]
+    images = [f for f in os.listdir(input_folder) 
+              if os.path.isfile(os.path.join(input_folder, f)) 
+              and os.path.splitext(f)[1].lower() in image_extensions]
     
     # Shuffle the images
     random.shuffle(images)
     
-    # Get the folder name
-    folder_name = os.path.basename(os.path.normpath(folder_path))
+    # Calculate split sizes
+    total = len(images)
+    train_count = int(0.7 * total)
+    val_count = int(0.15 * total)
+    test_count = total - train_count - val_count  # remainder goes to test
     
-    # Rename each image
-    for i, image in enumerate(images, start=1):
-        old_path = os.path.join(folder_path, image)
-        ext = os.path.splitext(image)[1]
-        new_name = f"{folder_name}_{i}{ext}"
-        new_path = os.path.join(folder_path, new_name)
+    # Create splits
+    splits = {
+        'train': images[:train_count],
+        'val': images[train_count:train_count+val_count],
+        'test': images[train_count+val_count:]
+    }
+    
+    # Get folder name for naming
+    folder_name = os.path.basename(os.path.normpath(input_folder))
+    
+    # Process each split
+    for split_name, split_images in splits.items():
+        # Create output directory structure
+        output_dir = os.path.join(output_root, split_name, folder_name)
+        os.makedirs(output_dir, exist_ok=True)
         
-        # Handle potential name conflicts
-        while os.path.exists(new_path):
-            i += 1
+        # Copy and rename files
+        for i, image in enumerate(tqdm(split_images, desc=f"{folder_name} {split_name}"), 1):
+            ext = os.path.splitext(image)[1]
             new_name = f"{folder_name}_{i}{ext}"
-            new_path = os.path.join(folder_path, new_name)
-        
-        os.rename(old_path, new_path)
-        print(f"Renamed {image} to {new_name}")
+            src_path = os.path.join(input_folder, image)
+            dst_path = os.path.join(output_dir, new_name)
+            
+            shutil.copy2(src_path, dst_path)  # copy2 preserves metadata
 
-# List of your folders (replace with your actual folder paths)
-folders = [
-    "path/to/folder1",
-    "path/to/folder2",
-    "path/to/folder3"
-]
+def main():
+    # Configuration
+    input_folders = [
+        r"C:\Users\shard\Downloads\shapes\Triangle",
+        r"C:\Users\shard\Downloads\shapes\Square",
+        r"C:\Users\shard\Downloads\shapes\Circle"
+    ]
+    output_root = r"C:\Users\shard\Downloads\Shapes"  # Where to create train/val/test folders
+    
+    # Create output directory structure
+    for split in ['train', 'val', 'test']:
+        os.makedirs(os.path.join(output_root, split), exist_ok=True)
+    
+    # Process each input folder
+    for folder in input_folders:
+        if os.path.isdir(folder):
+            print(f"\nProcessing: {folder}")
+            process_folder(folder, output_root)
+        else:
+            print(f"Folder not found: {folder}")
+    
+    print("\nAll processing complete!")
 
-for folder in folders:
-    if os.path.isdir(folder):
-        print(f"\nProcessing folder: {folder}")
-        shuffle_and_rename_images(folder)
-    else:
-        print(f"Folder not found: {folder}")
-
-print("\nAll folders processed!")
+if __name__ == "__main__":
+    main()
