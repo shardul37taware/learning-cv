@@ -18,7 +18,7 @@ transform = transforms.Compose([
 
 
 # Set up video feed (0 = webcam; change to URL or device for drone)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 class_names = ["Damage", "Fire", "Flood", "Normal"]  # change to your actual class labels
 
