@@ -4,8 +4,8 @@ import os
 from tqdm import tqdm
 
 # ====== SETTINGS ======
-INPUT_FOLDER = r"D:\ODM\odm_boruszyn_kap-master\odm_boruszyn_kap-master\images"
-OUTPUT_ORTHO = r"D:\ODM\odm_boruszyn_kap-master\odm_boruszyn_kap-master\orthophoto_result.jpg"
+INPUT_FOLDER = r"D:\ODM\odm_data_langley-master\odm_data_langley-master\images"
+OUTPUT_ORTHO = r"D:\ODM\odm_data_langley-master\odm_data_langley-master\orthophoto_result.jpg"
 BATCH_SIZE = 10  # Smaller batches for stability
 RESIZE_FACTOR = 0.5  # Balanced resolution/RAM
 FEATURE_METHOD = "SIFT"  # Better for aerial images
