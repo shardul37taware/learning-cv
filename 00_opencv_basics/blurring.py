@@ -4,11 +4,11 @@ import cv2
 path = 'C:\\Users\\shard\\Downloads'
 image_path = os.path.join(path, "city.jpg")
 
-img = cv2.imread(r"C:\Users\shard\Downloads\F67wSnxaAAAZ1oP.jpg")
+img = cv2.imread(r"C:\Users\shard\Downloads\Screenshot 2025-09-27 160409.png")
 
-img_blur = cv2.blur(img, (5, 5))
-img_gaussian = cv2.GaussianBlur(img, (5,5), 5)
-img_median = cv2.medianBlur(img, 5)
+img_blur = cv2.blur(img, (3, 3))
+img_gaussian = cv2.GaussianBlur(img, (3,3), 3)
+img_median = cv2.medianBlur(img, 3)
 
 # for i in range(50, 0, -1):
 #     print(i)
