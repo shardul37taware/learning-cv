@@ -4,7 +4,7 @@ import cv2
 path = 'C:\\Users\\shard\\Downloads'
 image_path = os.path.join(path, "city.jpg")
 
-img = cv2.imread(r"C:\Users\shard\Downloads\Screenshot 2025-09-27 160409.png")
+img = cv2.imread(r"C:\Users\shardul\Pictures\Untitled design (1).png")
 
 img_blur = cv2.blur(img, (3, 3))
 img_gaussian = cv2.GaussianBlur(img, (3,3), 3)
